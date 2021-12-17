@@ -1,27 +1,6 @@
-from collections import namedtuple
-import altair as alt
-import math
-import pandas as pd
 import streamlit as st
-
-
-
-
-import streamlit as st
-import altair
-def local_css(file_name):
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-local_css("style.css")
-
-
-
 import numpy as np
 import pandas as np
-
-
-
 import pickle
 
 forest = pickle.load(open( "forest.p", "rb" ))
