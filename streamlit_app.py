@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
+import sklearn
 import pickle
 
 forest = pickle.load(open( "forest.p", "rb" ))
