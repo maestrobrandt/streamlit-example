@@ -4,35 +4,51 @@ import math
 import pandas as pd
 import streamlit as st
 
-"""
-# Welcome to Streamlit!
-
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
-
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
-
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
 
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+import streamlit as st
+import altair
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
-    points_per_turn = total_points / num_turns
+local_css("style.css")
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+
+import numpy as np
+import pandas as np
+
+
+
+import pickle
+
+forest = pickle.load(open( "forest.p", "rb" ))
+
+
+st.title('Admission Predictor')
+st.subheader('GPA:')
+gpa_slider = st.slider("Choose to the nearest 0.1", min_value = 0.0, max_value = 4.0, step = 0.1)
+st.write('GPA:', gpa_slider)
+gpa = gpa_slider
+st.subheader('GRE Score:')
+gre_slider = st.slider("Choose to the nearest 1", min_value = 0.0, max_value = 800.0, step = 1.0)
+st.write('GRE Score:', gre_slider)
+gre = gre_slider
+tn_box = st.checkbox('Attended Top Notch')
+tn = 0
+if not tn_box:
+    st.write('Did not attend top notch school')
+else:
+    st.write('Attended top notch school')
+    tn = 1
+
+
+# In[6]:
+
+
+st.header('Chance of Admission:')
+button = st.button('PREDICT')
+if button:
+    st.write(round(((forest.predict_proba([[gre, tn, gpa]])[:,1])[0])*100, 2), "%")
