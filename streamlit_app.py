@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-import pandas as np
+import pandas as pd
 import pickle
 
 forest = pickle.load(open( "forest.p", "rb" ))
@@ -22,10 +22,6 @@ if not tn_box:
 else:
     st.write('Attended top notch school')
     tn = 1
-
-
-# In[6]:
-
 
 st.header('Chance of Admission:')
 button = st.button('PREDICT')
